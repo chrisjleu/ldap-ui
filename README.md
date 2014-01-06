@@ -21,4 +21,5 @@
 
 ## References/Useful links
 
-- http://www.novell.com/documentation/developer/samplecode/jldap_sample/
+- Novell LDAP [examples and documentation](http://www.novell.com/documentation/developer/samplecode/jldap_sample/ "Novell LDAP documentation").
+- [Spring Security tutorial](http://spring.io/blog/2013/07/03/spring-security-java-config-preview-web-security/ "Spring Security tutorial") and also Designing and Implementing a Web Application with Spring [part 6](http://spring.io/guides/tutorials/web/6/ "Spring tutorial part 6")

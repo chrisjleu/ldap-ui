@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 /**
  * This is the Web MVC related Spring configuration.
  * 
- * @author George
+ * @author Chris
  *
  */
 @Configuration
@@ -29,7 +29,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 			logger.debug("setting up view resolver");
 		}
 
-		// This will ease the process of forwarding a request to a JSP. By specifiying the prefix
+		// This will ease the process of forwarding a request to a JSP. By specifying the prefix
 		// and the suffix, we can redirect to a JSP without having to code the folder or the suffix.
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix("/WEB-INF/views/");

@@ -1,8 +1,13 @@
-BUILD
+## About
 
-* From this folder type ```mvn install```. This will build the war file too.
+## Prerequisites
+- Download the latest [Maven](http://maven.apache.org/download.cgi "Maven's download page").
 
-TODO
+## How to build
+
+- From this folder type ```mvn install```. This will (also) build the war file that you can deploy to an application server.
+
+## TODO
 - [ ] status of user
 - [ ] verify password of user
 - [ ] list roles of a user
@@ -14,6 +19,6 @@ TODO
 - [ ] list users in an organisation and its suborganisations
 - [ ] Reset user status and password
 
-REFERENCES
+## References/Useful links
 
-http://www.novell.com/documentation/developer/samplecode/jldap_sample/
+- http://www.novell.com/documentation/developer/samplecode/jldap_sample/

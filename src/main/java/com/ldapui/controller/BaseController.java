@@ -116,12 +116,14 @@ public class BaseController {
         boolean isBound = false;
         try {
             isBound = userService.canUserBind(dn, password);
+            model.addAttribute("message", "Is user \"" + dn + "\" bound? " + isBound);
         } catch (ServiceException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            if(logger.isErrorEnabled()) {
+                logger.error("Unable to determine if user " + dn + " can bind", e);
+            }
+            model.addAttribute("message", e);
         }
         
-        model.addAttribute("message", "Is user \"" + dn + "\" bound? " + isBound);
 
         return "dashboard";
     }

@@ -63,7 +63,7 @@ public class LdapUserService implements UserService {
 		try {
 			return connectionBinder.canUserBind(userDN, password);
 		} catch (UnsupportedEncodingException | LDAPException | InterruptedException e) {
-			throw new ServiceException("Unable to bind user " + userDN, e);
+			throw new ServiceException("Unable to bind user " + userDN + " owing to " + e.getMessage(), e);
 		}
 	}
 

@@ -27,11 +27,13 @@ import org.springframework.web.WebApplicationInitializer;
  * in this case means, allow access to any URL that formLogin() uses.</li>
  * <li>Any URL that starts with "/admin/" must be an administrative user. For our example, that would be the user
  * "admin".</li>
- * <li>All remaining URLs require that the user be successfully authenticated</li>
+ * <li>All remaining URLs require that the user be successfully authenticated.</li>
  * <li>Setup form based authentication using the Java configuration defaults. Authentication is performed when a POST is
  * submitted to the URL "/login" with the parameters "username" and "password".</li>
  * <li>Explicitly state the login page, which means the developer is required to render the login page when GET /login
  * is requested.</li>
+ * <li>The URL to redirect to after logout has occurred by default is "/login?logout". This changes that so that it is
+ * easier to map in our Spring MVC controller class.</li>
  * </ol>
  * <p>
  * NB: This class is not enough to start the Spring Security filter chain. This should be configured in another
@@ -73,13 +75,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
       http
+        .csrf().disable() // TODO enable at some point http://spring.io/blog/2013/08/21/spring-security-3-2-0-rc1-highlights-csrf-protection
         .authorizeRequests()
-          .antMatchers("/welcome","/about").permitAll() // 4
+          .antMatchers("/", "/welcome", "/logout").permitAll() // 4
           .antMatchers("/admin/**").hasRole("ADMIN") // 6
           .anyRequest().authenticated() // 7
           .and()
       .formLogin()  // 8
           .loginPage("/login") // 9
-          .permitAll(); // 5
+          .permitAll() // 5
+          .and()
+          .logout().logoutSuccessUrl("/welcome"); // 10
     }
 }

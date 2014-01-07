@@ -33,11 +33,9 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 @Order(2)
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    Logger logger = LoggerFactory.getLogger(WebAppInitializer.class);
-
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { RootConfig.class, WebSecurityConfiguration.class };
+        return new Class[] { WebSecurityConfiguration.class, RootConfig.class};
     }
 
     @Override

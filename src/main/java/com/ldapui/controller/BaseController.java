@@ -62,6 +62,7 @@ public class BaseController {
 		return "welcome";
 	}
 
+	// TODO Should be a POST method (and secure at that)
 	@RequestMapping(value = { "/bindcheck/{dn}/{pwd}" }, method = RequestMethod.GET)
 	public String canUserBind(@PathVariable String dn, @PathVariable String pwd, ModelMap model) {
 		boolean isBound = false;

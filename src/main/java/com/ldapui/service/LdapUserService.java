@@ -38,10 +38,9 @@ public class LdapUserService implements UserService {
 		// TODO needs to go to LDAP at this point
 		if ("10001".equals(userId)) {
 			User george = new User();
-			george.setEmailAddress("gleung@gmail.com");
+			george.setEmailAddress("george@gmail.com");
 			george.setId("10001");
 			george.setFirstName("george");
-			george.setLastName("leung");
 			return george;
 		}
 

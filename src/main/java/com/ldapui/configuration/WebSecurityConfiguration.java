@@ -64,7 +64,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .password("password")
             .roles("ADMIN","USER");
     }
-    
+
     @Override
     public void configure(WebSecurity web) throws Exception {
       web
@@ -81,10 +81,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
           .antMatchers("/admin/**").hasRole("ADMIN") // 6
           .anyRequest().authenticated() // 7
           .and()
-      .formLogin()  // 8
+        .formLogin()  // 8
           .loginPage("/login") // 9
           .permitAll() // 5
           .and()
-          .logout().logoutSuccessUrl("/welcome"); // 10
+        .logout().logoutSuccessUrl("/welcome"); // 10
     }
 }

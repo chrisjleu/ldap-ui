@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ldapui.model.User;
 import com.ldapui.service.ServiceException;
@@ -28,7 +29,7 @@ import com.ldapui.service.UserService;
 public class BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
-    
+
     @Inject
     UserService userService;
 
@@ -41,19 +42,18 @@ public class BaseController {
      */
     @RequestMapping(value = { "/", "/welcome", "/logout" }, method = RequestMethod.GET)
     public String welcome(ModelMap model) {
-        if(logger.isDebugEnabled()) {
+        if (logger.isDebugEnabled()) {
             logger.debug("Handling request for the home page");
         }
 
         User user = userService.findUser("10001");
         userService.findUserRoles("10001");
 
-        model.addAttribute("message", "Welcome " + user.getFirstName() + " to your Maven Web Project with Spring 3 MVC");
+        model.addAttribute("message", "Welcome " + user.getFirstName() + " to LDAP UI.");
 
         return "welcome";
 
     }
-
 
     /**
      * Directs the user to the primary login page.
@@ -62,8 +62,7 @@ public class BaseController {
      */
     @RequestMapping(value = { "/login" })
     public String login() {
-
-        if(logger.isDebugEnabled()) {
+        if (logger.isDebugEnabled()) {
             logger.debug("Directing user to main login JSP");
         }
 
@@ -71,34 +70,21 @@ public class BaseController {
     }
 
     /**
-     * Directs the user to the primary login page.
+     * Directs the user to the dashboard page. This is the page the user can do most of the useful things. They should
+     * be logged in to see this page.
      * 
      * @return
      */
-    /*@RequestMapping(value = { "/login?error" })
-    public String loginError() {
-
-        if(logger.isDebugEnabled()) {
-            logger.debug("User was not authenticated");
+    @RequestMapping(value = { "/dashboard" })
+    public String dashboard() {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Directing user to the dashboard JSP");
         }
 
-        return "login";
-    }*/
+        return "dashboard";
+    }
 
-    /**
-     * Directs the user to the logout page.
-     * 
-     * @return
-     */
-/*    @RequestMapping(value = { "/login?logout" })
-    public String logout() {
-
-        if(logger.isDebugEnabled()) {
-            logger.debug("Directing user to the logout page");
-        }
-
-        return "welcome";
-    }*/
+    // /////////// FUNCTIONAL CALLS (Could resppond in JSON) ///////////////////////
 
     @RequestMapping(value = { "/usersearch/{userId}" }, method = RequestMethod.GET)
     public String usersearch(@PathVariable String userId, ModelMap model) {
@@ -107,24 +93,37 @@ public class BaseController {
         if (user == null) {
             model.addAttribute("message", "Could not find user with ID " + userId);
         } else {
-            model.addAttribute("message", "Foun" + user.getEmailAddress());
+            model.addAttribute("message", "Found" + user.getEmailAddress());
         }
 
         return "welcome";
     }
 
-    // TODO Should be a POST method (and secure at that)
-    @RequestMapping(value = { "/bindcheck/{dn}/{pwd}" }, method = RequestMethod.GET)
-    public String canUserBind(@PathVariable String dn, @PathVariable String pwd, ModelMap model) {
+
+    /**
+     * GET requests will just be directed back to the dashboard view.
+     * 
+     * @return
+     */
+    @RequestMapping(value = { "/bindcheck" }, method = RequestMethod.GET)
+    public String canUserBindGet() {
+        return "dashboard";
+    }
+
+    
+    @RequestMapping(value = { "/bindcheck" }, method = RequestMethod.POST)
+    public String canUserBind(@RequestParam("dn") String dn, @RequestParam("pwd") String password, ModelMap model) {
         boolean isBound = false;
         try {
-            isBound = userService.canUserBind(dn, pwd);
+            isBound = userService.canUserBind(dn, password);
         } catch (ServiceException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        model.addAttribute("message", "Is user bound? " + isBound);
-        return "welcome";
+        
+        model.addAttribute("message", "Is user \"" + dn + "\" bound? " + isBound);
+
+        return "dashboard";
     }
 
 }

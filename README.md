@@ -3,9 +3,11 @@
 ## Prerequisites
 - Download the latest [Maven](http://maven.apache.org/download.cgi "Maven's download page").
 
-## How to build
+## Get Started
 
 - From this folder type ```mvn install```. This will (also) build the war file that you can deploy to an application server.
+- To build and run the application with Tomcat 7, type ```mvn tomcat7:run```. Access the application on http://localhost:8080/
+- You can log in with user/password or admin/password.
 
 ## TODO
 - [ ] status of user

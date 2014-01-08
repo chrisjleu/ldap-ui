@@ -11,6 +11,12 @@
 - You can log in with user/password or admin/password.
 
 ## TODO
+#### Generic Functional
+- [x] Log in and Logout capabilities.
+- [ ] Menu bar for easy navigation to different parts of the application.
+- [ ] The ability to view (or even change) LDAP connection details.
+
+#### LDAP Functional
 - [x] Check that a user can bind, given a username and password
 - [ ] status of user
 - [ ] verify password of user

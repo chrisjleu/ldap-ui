@@ -6,7 +6,7 @@
 ## Get Started
 
 - From this folder type ```mvn install```. This will (also) build the war file that you can deploy to an application server.
-- To build and run the application with Tomcat 7, type ```mvn tomcat7:run```. Access the application on http://localhost:8080/
+- To build and run the application with Tomcat 7, type ```mvn tomcat7:run```. If you prefer, you can use Jetty instead of Tomcat by running ```mvn jetty:run```. Access the application on [http://localhost:8080/](http://localhost:8080/).
 - You can log in with user/password or admin/password.
 
 ## TODO

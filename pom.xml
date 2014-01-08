@@ -36,7 +36,8 @@
 			<version>${junit.version}</version>
 		</dependency>
 
-		<!-- Servlet API (this should be provided by your application server so long as it is servlet 3.0 compliant)-->
+		<!-- Servlet API (this should be provided by your application server so 
+			long as it is servlet 3.0 compliant) -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -46,28 +47,28 @@
 
 		<!-- Java Standard Tag Library (for use in JSPs) -->
 		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>jstl</artifactId>
-		    <version>1.2</version>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.glassfish.web</groupId>
-		    <artifactId>jstl-impl</artifactId>
-		    <version>1.2</version>
-		    <exclusions>
-		        <exclusion>
-		            <artifactId>servlet-api</artifactId>
-		            <groupId>javax.servlet</groupId>
-		        </exclusion>
-		        <exclusion>
-		            <artifactId>jsp-api</artifactId>
-		            <groupId>javax.servlet.jsp</groupId>
-		        </exclusion>
-		        <exclusion>
-		            <artifactId>jstl-api</artifactId>
-		            <groupId>javax.servlet.jsp.jstl</groupId>
-		        </exclusion>
-		    </exclusions>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>jstl-impl</artifactId>
+			<version>1.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>javax.servlet</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jsp-api</artifactId>
+					<groupId>javax.servlet.jsp</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jstl-api</artifactId>
+					<groupId>javax.servlet.jsp.jstl</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- The @Inject annotation -->
@@ -105,7 +106,7 @@
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
-            
+
 	</dependencies>
 
 	<build>
@@ -134,11 +135,31 @@
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<configuration>
-					<!-- <path>/${project.artifactId}</path> This is the default so no need to specify -->
+					<!-- <path>/${project.artifactId}</path> This is the default so no need 
+						to specify -->
 					<path>/</path>
 					<port>8080</port>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>8.1.14.v20131031</version>
+				<configuration>
+					<scanIntervalSeconds>1</scanIntervalSeconds>
+					<!-- Context path is / by default -->
+					<!-- <webApp> -->
+					<!-- 	<contextPath>/${project.artifactId}</contextPath> -->
+					<!-- </webApp> -->
+					<connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<port>8080</port>
+						</connector>
+					</connectors>
+				</configuration>
+			</plugin>
+
 		</plugins>
 
 		<pluginManagement>
@@ -149,6 +170,6 @@
 					<version>2.2</version>
 				</plugin>
 			</plugins>
-		</pluginManagement>		
+		</pluginManagement>
 	</build>
 </project>

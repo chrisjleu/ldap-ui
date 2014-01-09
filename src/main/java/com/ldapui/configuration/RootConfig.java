@@ -6,10 +6,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.security.authentication.encoding.LdapShaPasswordEncoder;
-
-import com.novell.ldap.LDAPException;
-import com.novell.ldap.connectionpool.PoolManager;
+import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.core.support.DefaultDirObjectFactory;
+import org.springframework.ldap.core.support.LdapContextSource;
 
 /**
  * The root configuration where most (Spring-managed) objects specific to this application should be initialized.
@@ -30,39 +29,36 @@ public class RootConfig {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
-    /*
-     * Data source connection details. These are specified in a properties file.
-     */
-    @Value("${host}")
-    String host;
 
-    @Value("${port}")
-    int port;
+    @Value("${url}")
+    String url;
 
-    @Value("${pool.max.cons}")
-    int connectionPoolMaxCons;
+    @Value("${loginDN}")
+    String login;
 
-    @Value("${pool.max.shared.cons}")
-    int connectionPoolMaxSharedCons;
+    @Value("${password}")
+    String password;
 
-    /**
-     * Manages pooled connections to the LDAP data source.
-     * 
-     * @return {@link PoolManager}
-     * @throws LDAPException
-     */
+    @Value("${base}")
+    String base;
+
+    @Value("${anonymousReadOnly}")
+    boolean anonymousReadOnly;
+
     @Bean
-    public PoolManager poolManager() throws LDAPException {
-        return new PoolManager(host, port, connectionPoolMaxCons, connectionPoolMaxSharedCons, null);
+    public LdapTemplate ldapTemplate() {
+        return new LdapTemplate(ldapContextSource());
     }
 
-    /**
-     * LDAP password encoder.
-     * 
-     * @return an instance of LdapShaPasswordEncoder
-     */
     @Bean
-    public LdapShaPasswordEncoder ldapShaPasswordEncoder() {
-        return new LdapShaPasswordEncoder();
+    public LdapContextSource ldapContextSource() {
+        LdapContextSource cs = new LdapContextSource();
+        cs.setUrl(url);
+        cs.setUserDn(login);
+        cs.setPassword(password);
+        cs.setBase(base);
+        cs.setDirObjectFactory(new DefaultDirObjectFactory().getClass ());
+        cs.setAnonymousReadOnly(anonymousReadOnly);
+        return cs;
     }
 }

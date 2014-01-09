@@ -48,6 +48,7 @@ import java.util.TimeZone;
 import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.security.authentication.encoding.LdapShaPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -58,7 +59,12 @@ import com.novell.ldap.LDAPEntry;
 import com.novell.ldap.LDAPException;
 import com.novell.ldap.connectionpool.PoolManager;
 
-@Component
+/**
+ * 
+ * @author cleung
+ * @deprecated Not required if using Spring's {@link LdapTemplate}.See {@link PersonDao} instead.
+ */
+//@Component
 public class ConnectionBinder {
 
 	public static final int LENGTH = 42;
@@ -68,7 +74,7 @@ public class ConnectionBinder {
 	public static String locale = date.toString();
 
 	private static final String USER_DN_PREFIX = "cn=";
-	private static final String USER_DN_SUFFIX = ",ou=users,ou=system";
+	private static final String USER_DN_SUFFIX = ",ou=Users,o=YourOrg";
 
 	@Inject
 	LdapShaPasswordEncoder encoder;
@@ -128,7 +134,7 @@ public class ConnectionBinder {
 			if (lc.compare(userDN, attribute))
 				System.out.println("password is correct");
 			else {
-				System.out.println("password is incorrect");
+				System.out.println(attribute + " is not the password");
 				checkResult = false;
 			}
 

@@ -3,80 +3,69 @@
  */
 package com.ldapui.service;
 
-import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.ldapui.connection.ConnectionBinder;
-import com.ldapui.model.Organization;
-import com.ldapui.model.Role;
-import com.ldapui.model.User;
-import com.novell.ldap.LDAPException;
+import com.ldapui.connection.PersonDao;
+import com.ldapui.model.Person;
 
 /**
  * A user service that finds users in an LDAP store.
  * 
- * @author George
+ * @author Chris
  * 
  */
 @Service
 public class LdapUserService implements UserService {
 
-	@Inject
-	ConnectionBinder connectionBinder;
+    private static final Logger logger = LoggerFactory.getLogger(LdapUserService.class);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.ldapui.service.UserService#findUser(java.lang.String)
-	 */
-	@Override
-	public User findUser(String userId) {
-		// TODO needs to go to LDAP at this point
-		if ("10001".equals(userId)) {
-			User george = new User();
-			george.setEmailAddress("george@gmail.com");
-			george.setId("10001");
-			george.setFirstName("george");
-			return george;
-		}
+    @Inject
+    PersonDao personDao;
 
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.ldapui.service.UserService#findUser(java.lang.String)
+     */
+    @Override
+    public List<Person> findPersonByName(String name) throws ServiceException {
+        try {
+            List<Person> people = personDao.findByName(name);
+            if (people == null) {
+                return Collections.emptyList();
+            }
 
-	@Override
-	public List<Role> findUserRoles(String userId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+            return people;
+        } catch (Exception e) {
+            throw new ServiceException("Could not find users with name " + name, e);
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.ldapui.service.UserService#canUserBind(java.lang.String)
-	 */
-	@Override
-	public boolean canUserBind(String userDN, String password) throws ServiceException {
-		try {
-			return connectionBinder.canUserBind(userDN, password);
-		} catch (UnsupportedEncodingException | LDAPException | InterruptedException e) {
-			throw new ServiceException("Unable to bind user " + userDN + " owing to " + e.getMessage(), e);
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.ldapui.service.UserService#canUserBind(java.lang.String)
+     */
+    @Override
+    public boolean authenticate(String userDN, String password) throws ServiceException {
+        try {
+            return personDao.authenticate(userDN, password);
+        } catch (Exception e) {
+            throw new ServiceException("Unable to determine if user " + userDN + " is authenticated owing to "
+                    + e.getMessage(), e);
+        }
+    }
 
-	@Override
-	public List<User> findUsersInOrganization(String organizationId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Organization> findSubOrganizations(String organizationId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+    @Override
+    public List<Person> findUsersInOrganization(String organizationId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

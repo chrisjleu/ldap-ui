@@ -16,12 +16,6 @@
 	</properties>
 
 	<dependencies>
-		<!-- LDAP -->
-		<dependency>
-			<groupId>com.novell.ldap</groupId>
-			<artifactId>jldap</artifactId>
-			<version>2009-10-07</version>
-		</dependency>
 
 		<!-- Logging -->
 		<dependency>
@@ -158,9 +152,7 @@
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<configuration>
-					<!-- <path>/${project.artifactId}</path> This is the default so no need 
-						to specify -->
-					<path>/</path>
+					<path>/${project.artifactId}</path>
 					<port>8080</port>
 				</configuration>
 			</plugin>
@@ -172,9 +164,9 @@
 				<configuration>
 					<scanIntervalSeconds>1</scanIntervalSeconds>
 					<!-- Context path is / by default -->
-					<!-- <webApp> -->
-					<!-- <contextPath>/${project.artifactId}</contextPath> -->
-					<!-- </webApp> -->
+					<webApp>
+						<contextPath>/${project.artifactId}</contextPath>
+					</webApp>
 					<connectors>
 						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
 							<port>8080</port>

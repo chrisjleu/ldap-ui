@@ -61,7 +61,7 @@ import com.novell.ldap.connectionpool.PoolManager;
 
 /**
  * 
- * @author cleung
+ * @author Chris
  * @deprecated Not required if using Spring's {@link LdapTemplate}.See {@link PersonDao} instead.
  */
 //@Component

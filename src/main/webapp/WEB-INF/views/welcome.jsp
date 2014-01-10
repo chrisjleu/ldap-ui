@@ -34,7 +34,8 @@
     <form method="POST" action="${logoutUrl}">
         <input type="submit" value="Sign out" />
     </form>
-    <p>Go to the <a href="/dashboard">dashboard</a></p>
+    <c:url var="welcomePageUrl" value="/dashboard"/>
+    <p>Go to the <a href="${welcomePageUrl}">dashboard</a></p>
 </sec:authorize>
 
 </body>

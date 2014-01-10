@@ -53,7 +53,9 @@ public class SpringPersonDao implements PersonDao {
         boolean result = ldapTemplate.authenticate("", filter.toString(), password, errorCallback);
         if (!result) {
             Exception error = errorCallback.getError();
-            System.out.println(error);
+            if(logger.isDebugEnabled()) {
+                logger.debug("The user was not authenticated owing to " + error.getMessage());
+            }
         }
 
         return result;

@@ -50,7 +50,7 @@ public class SpringPersonDao implements PersonDao {
     public boolean authenticate(String cn, String password) {
         Filter filter = new WhitespaceWildcardsFilter("cn", cn);
         CollectingAuthenticationErrorCallback errorCallback = new CollectingAuthenticationErrorCallback();
-        boolean result = ldapTemplate.authenticate("", filter.toString(), password, errorCallback);
+        boolean result = ldapTemplate.authenticate("", filter.encode(), password, errorCallback);
         if (!result) {
             Exception error = errorCallback.getError();
             if(logger.isDebugEnabled()) {
@@ -104,6 +104,12 @@ public class SpringPersonDao implements PersonDao {
         context.setAttributeValue("description", person.getDescription());
     }
 
+    /**
+     * This knows how to map context to a {@link Person}.
+     * 
+     * @author Chris
+     *
+     */
     private static class PersonContextMapper extends AbstractContextMapper {
         public Object doMapFromContext(DirContextOperations context) {
             Person person = new Person();
